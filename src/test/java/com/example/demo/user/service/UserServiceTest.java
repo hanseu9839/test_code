@@ -2,6 +2,7 @@ package com.example.demo.user.service;
 
 import com.example.demo.common.domain.exception.CertificationCodeNotMatchedException;
 import com.example.demo.common.domain.exception.ResourceNotFoundException;
+import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserStatus;
 import com.example.demo.user.domain.UserCreate;
 import com.example.demo.user.domain.UserUpdate;
@@ -40,7 +41,7 @@ public class UserServiceTest {
     void getByEmail은_ACTIVE_상태인_유저를_찾아올_수_있다() {
         // given
         String email = "hanseu9839@gmail.com";
-        UserEntity result = userService.getByEmail(email);
+        User result = userService.getByEmail(email);
 
         // when
         assertThat(result.getNickname()).isEqualTo("hanseu9839");
@@ -59,8 +60,7 @@ public class UserServiceTest {
         // when
         // then
         assertThatThrownBy(() ->{
-            UserEntity result = userService.getByEmail(email);
-
+           userService.getByEmail(email);
         }).isInstanceOf(ResourceNotFoundException.class);
 
     }
@@ -70,7 +70,7 @@ public class UserServiceTest {
     void getById은_ACTIVE_상태인_유저를_찾아올_수_있다() {
         // given
         // when
-        UserEntity result = userService.getById(11L);
+        User result = userService.getById(11L);
         // then
         assertThat(result.getNickname()).isEqualTo("hanseu9839");
     }
@@ -82,8 +82,7 @@ public class UserServiceTest {
         // when
         // then
         assertThatThrownBy(() ->{
-            UserEntity result = userService.getById(12L);
-
+                userService.getById(12L);
         }).isInstanceOf(ResourceNotFoundException.class);
 
     }
@@ -100,7 +99,7 @@ public class UserServiceTest {
         BDDMockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         // when
-        UserEntity result = userService.create(userCreate);
+        User result = userService.create(userCreate);
 
         // then
         assertThat(result.getId()).isNotNull();
@@ -121,10 +120,10 @@ public class UserServiceTest {
         userService.update(11, userUpdate);
 
         // then
-        UserEntity userEntity = userService.getById(11L);
-        assertThat(userEntity.getId()).isNotNull();
-        assertThat(userEntity.getAddress()).isEqualTo("Incheon");
-        assertThat(userEntity.getNickname()).isEqualTo("hanseu9839-nn");
+        User user = userService.getById(11L);
+        assertThat(user.getId()).isNotNull();
+        assertThat(user.getAddress()).isEqualTo("Incheon");
+        assertThat(user.getNickname()).isEqualTo("hanseu9839-nn");
         // assertThat(result.getCertificationCode()).isEqualTo("T.T"); // FIXME
     }
 
@@ -136,8 +135,8 @@ public class UserServiceTest {
         userService.login(11);
 
         // then
-        UserEntity userEntity = userService.getById(11);
-        assertThat(userEntity.getLastLoginAt()).isGreaterThan(0L);
+        User user = userService.getById(11);
+        assertThat(user.getLastLoginAt()).isGreaterThan(0L);
         // assertThat(result.getLastLoginAt()).isEqualTo("T.T"); // FIXME
     }
 
@@ -148,8 +147,8 @@ public class UserServiceTest {
         userService.verifyEmail(12, "aaaaaaaaaaaa-aaaaaaa-aaaaaaaaaab");
 
         // then
-        UserEntity userEntity = userService.getById(12);
-        assertThat(userEntity.getStatus()).isEqualTo(UserStatus.ACTIVE);
+        User user = userService.getById(12);
+        assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);
     }
 
 
