@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.model.dto.PostCreateDto;
-import com.example.demo.model.dto.PostUpdateDto;
-import com.example.demo.repository.PostEntity;
+import com.example.demo.post.domain.PostCreate;
+import com.example.demo.post.domain.PostUpdate;
+import com.example.demo.post.infrastructure.PostEntity;
+import com.example.demo.post.service.PostService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +11,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource("classpath:test-application.properties")
@@ -37,7 +37,7 @@ class PostServiceTest {
     @Test
     void postCreateDto_를_이용하여_유저를_생성할_수_있다() {
         // given
-        PostCreateDto userCreateDto = PostCreateDto.builder()
+        PostCreate userCreateDto = PostCreate.builder()
                 .writerId(11)
                 .content("foobar")
                 .build();
@@ -56,7 +56,7 @@ class PostServiceTest {
     @Test
     void postUpdateDto_를_이용하여_유저를_생성할_수_있다() {
         // given
-        PostUpdateDto userUpdateDto = PostUpdateDto.builder()
+        PostUpdate userUpdateDto = PostUpdate.builder()
                 .content("hello world :)")
                 .build();
 
