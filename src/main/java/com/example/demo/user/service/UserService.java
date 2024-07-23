@@ -14,6 +14,7 @@ import java.time.Clock;
 import java.util.UUID;
 
 import com.example.demo.user.service.port.UserRepository;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@Builder
 @RequiredArgsConstructor
 public class UserService {
 
