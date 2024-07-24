@@ -2,36 +2,23 @@ package com.example.demo.user.controller;
 
 import com.example.demo.common.domain.exception.CertificationCodeNotMatchedException;
 import com.example.demo.common.domain.exception.ResourceNotFoundException;
-import com.example.demo.common.service.ClockHolder;
-import com.example.demo.mock.TestClockHolder;
 import com.example.demo.mock.TestContainer;
 import com.example.demo.mock.TestUuidHolder;
-import com.example.demo.user.controller.port.UserReadService;
+import com.example.demo.user.controller.port.UserService;
 import com.example.demo.user.controller.response.MyProfileResponse;
 import com.example.demo.user.controller.response.UserResponse;
 import com.example.demo.user.domain.User;
+import com.example.demo.user.domain.UserCreate;
 import com.example.demo.user.domain.UserStatus;
 import com.example.demo.user.domain.UserUpdate;
-import com.example.demo.user.infrastructure.UserEntity;
-import com.example.demo.user.infrastructure.UserJpaRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class UserControllerTest {
 
@@ -51,8 +38,7 @@ public class UserControllerTest {
                 .build());
 
         // when
-        ResponseEntity<UserResponse> result = UserController.builder().userReadService(testContainer.userReadService)
-         .build()
+        ResponseEntity<UserResponse> result = testContainer.userController
          .getUserById(1);
 
         // then
@@ -67,20 +53,10 @@ public class UserControllerTest {
 
     @Test
     void 사용자는_특정_유저의_정보를_전달_받을_수_있다() throws Exception {
-        // given
-        UserController userController = UserController.builder()
-                .userReadService(new UserReadService() {
-                    @Override
-                    public User getByEmail(String email) {
-                        return null;
-                    }
 
-                    @Override
-                    public User getById(long id) {
-                        throw new ResourceNotFoundException("Users", id);
-                    }
-                })
-                .build();
+        TestContainer testContainer = TestContainer.builder().build();
+        // given
+        UserController userController = testContainer.userController;
 
         // when
         // then
