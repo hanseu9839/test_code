@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CertificationService {
+public class CertificationService  {
     private final MailSender mailSender;
 
     public void send(String email, long userId, String certificationCode) {
